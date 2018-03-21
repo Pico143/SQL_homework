@@ -53,9 +53,9 @@ def find_Carol():
     connection, cursor = connect_to_database()
     cursor.execute("SELECT full_name FROM applicants")
     if cursor.rowcount == 0:
-        cursor.execute("ALTER TABLE applicants ADD full_name VARCHAR")
-    cursor.execute("UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name)")
-    cursor.execute("SELECT phone_number, full_name FROM applicants WHERE first_name='Carol'")
+        cursor.execute("ALTER TABLE applicants ADD full_name VARCHAR;")
+    cursor.execute("UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name);")
+    cursor.execute("SELECT phone_number, full_name FROM applicants WHERE first_name='Carol';")
     rows = cursor.fetchall()
     for item in rows:
         print (item)
@@ -66,9 +66,24 @@ def find_that_girl():
     connection, cursor = connect_to_database()
     cursor.execute("SELECT full_name FROM applicants")
     if cursor.rowcount == 0:
-        cursor.execute("ALTER TABLE applicants ADD full_name VARCHAR")
-    cursor.execute("UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name)")
-    cursor.execute("SELECT phone_number, full_name FROM applicants WHERE email LIKE '%@adipiscingenimmi.edu'")
+        cursor.execute("ALTER TABLE applicants ADD full_name VARCHAR;")
+    cursor.execute("UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name);")
+    cursor.execute("SELECT phone_number, full_name FROM applicants WHERE email LIKE '%@adipiscingenimmi.edu';")
+    rows = cursor.fetchall()
+    for item in rows:
+        print (item)
+    disconnect_from_database(connection, cursor)
+
+
+def add_marius():
+    connection, cursor = connect_to_database()
+    cursor.execute("SELECT * FROM applicants WHERE application_code=54823;")
+    if cursor.rowcount == 0:
+        cursor.execute(
+            "INSERT INTO applicants (first_name,last_name,phone_number,email,application_code) VALUES('Markus','Schaffarzyk','003620/725-2666','djnovus@groovecoverage.com','54823')")
+        cursor.execute(
+            "UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name) WHERE application_code=54823;")
+    cursor.execute("SELECT * FROM applicants WHERE application_code=54823;")
     rows = cursor.fetchall()
     for item in rows:
         print (item)
@@ -88,7 +103,7 @@ def main():
         elif choice == "4":
             find_that_girl()
         elif choice == "5":
-            pass
+            add_marius()
         elif choice == "6":
             pass
         elif choice == "7":
