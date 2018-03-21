@@ -8,7 +8,7 @@ def print_labels():
     print ("3.Find Carol.")
     print ("4.Find the girl from Adipiscingenimmi University.")
     print ("5.Add Markus to the application process with code 54823.")
-    print ("6.Change Jemima Foreman phone number.")
+    print ("6.Change Jemima Foreman phone number and show it.")
     print ("7.Remove students with email at mauriseu.net domain.")
     print ("0.Exit application\n")
 
@@ -36,7 +36,7 @@ def mentor_names():
     cursor.execute("SELECT first_name,last_name FROM mentors;")
     rows = cursor.fetchall()
     for item in rows:
-        print (item)
+        print (' '.join(item))
     disconnect_from_database(connection, cursor)
 
 
@@ -45,7 +45,7 @@ def miskolc_mentor_nicknames():
     cursor.execute("SELECT nick_name FROM mentors WHERE city='Miskolc';")
     rows = cursor.fetchall()
     for item in rows:
-        print (item)
+        print (' '.join(item))
     disconnect_from_database(connection, cursor)
 
 
@@ -58,7 +58,7 @@ def find_Carol():
     cursor.execute("SELECT phone_number, full_name FROM applicants WHERE first_name='Carol';")
     rows = cursor.fetchall()
     for item in rows:
-        print (item)
+        print (', '.join(item))
     disconnect_from_database(connection, cursor)
 
 
@@ -71,7 +71,7 @@ def find_that_girl():
     cursor.execute("SELECT phone_number, full_name FROM applicants WHERE email LIKE '%@adipiscingenimmi.edu';")
     rows = cursor.fetchall()
     for item in rows:
-        print (item)
+        print (', '.join(item))
     disconnect_from_database(connection, cursor)
 
 
@@ -85,8 +85,30 @@ def add_marius():
             "UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name) WHERE application_code=54823;")
     cursor.execute("SELECT * FROM applicants WHERE application_code=54823;")
     rows = cursor.fetchall()
-    for item in rows:
-        print (item)
+    for result in rows:
+        result = list(result)
+        for item in result:
+            result[result.index(item)] = str(item)
+        print (', '.join(result))
+    disconnect_from_database(connection, cursor)
+
+
+def change_foreman_phone_number():
+    connection, cursor = connect_to_database()
+    cursor.execute(
+        "UPDATE applicants SET phone_number = '003670/223-7459' WHERE first_name = 'Jemima' AND last_name = 'Foreman';")
+    cursor.execute("SELECT phone_number FROM applicants WHERE first_name = 'Jemima' AND last_name = 'Foreman';")
+    rows = cursor.fetchall()
+    for result in rows:
+        for item in result:
+            print (item)
+    disconnect_from_database(connection, cursor)
+
+
+def remove_arsenio_and_friend():
+    connection, cursor = connect_to_database()
+    cursor.execute("DELETE FROM applicants WHERE email LIKE '%@mauriseu.net';")
+    print ("Records with emails at @mauriseu.net domain are removed.")
     disconnect_from_database(connection, cursor)
 
 
@@ -105,9 +127,9 @@ def main():
         elif choice == "5":
             add_marius()
         elif choice == "6":
-            pass
+            change_foreman_phone_number()
         elif choice == "7":
-            pass
+            remove_arsenio_and_friend()
         elif choice == "0":
             break
         else:
