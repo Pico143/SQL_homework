@@ -62,6 +62,18 @@ def find_Carol():
     disconnect_from_database(connection, cursor)
 
 
+def find_that_girl():
+    connection, cursor = connect_to_database()
+    cursor.execute("SELECT full_name FROM applicants")
+    if cursor.rowcount == 0:
+        cursor.execute("ALTER TABLE applicants ADD full_name VARCHAR")
+    cursor.execute("UPDATE applicants SET full_name = CONCAT(first_name,' ',last_name)")
+    cursor.execute("SELECT phone_number, full_name FROM applicants WHERE email LIKE '%@adipiscingenimmi.edu'")
+    rows = cursor.fetchall()
+    for item in rows:
+        print (item)
+    disconnect_from_database(connection, cursor)
+
 
 def main():
     while True:
@@ -74,7 +86,7 @@ def main():
         elif choice == "3":
             find_Carol()
         elif choice == "4":
-            pass
+            find_that_girl()
         elif choice == "5":
             pass
         elif choice == "6":
