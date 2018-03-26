@@ -15,7 +15,7 @@ def print_labels():
 
 def connect_to_database():
     try:
-        connect_str = "dbname='pico' user='pico' host='localhost' password='F@llout2'"
+        connect_str = "dbname='pico' user='pico' host='localhost' password='any_password"
         connection = psycopg2.connect(connect_str)
         connection.autocommit = True
         cursor = connection.cursor()
